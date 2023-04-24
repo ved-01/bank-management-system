@@ -64,3 +64,6 @@ exports.create = (req,res) => {
     exports.cardspage = (req, res) => {
         res.render('cards',{ layout: 'cardslayout' });
     }
+    exports.dashboardpage = (req, res) => {
+        res.render('dashboard',{ layout: 'dashboardlayout' });
+    }

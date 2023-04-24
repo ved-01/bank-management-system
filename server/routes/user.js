@@ -9,5 +9,6 @@ router.post('/adduser', userController.create);
 
 router.get('/login', userController.loginpage);
 router.get('/cards', userController.cardspage);
+router.get('/dashboard', userController.dashboardpage);
 
 module.exports = router;
