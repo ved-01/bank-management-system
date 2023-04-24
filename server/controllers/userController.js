@@ -60,3 +60,7 @@ exports.create = (req,res) => {
     exports.loginpage = (req, res) => {
         res.render('login',{ layout: 'loginlayout' });
     }
+
+    exports.cardspage = (req, res) => {
+        res.render('cards',{ layout: 'cardslayout' });
+    }
