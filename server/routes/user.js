@@ -15,5 +15,6 @@ router.get('/profile', userController.profilepage);
 router.get('/subscriptions', userController.subscriptionspage);
 router.get('/support', userController.supportpage);
 router.get('/transactions', userController.transactionspage);
+router.get('/admin', userController.adminpage);
 
 module.exports = router;

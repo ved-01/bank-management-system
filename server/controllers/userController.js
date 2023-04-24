@@ -82,5 +82,8 @@ exports.create = (req,res) => {
     exports.transactionspage = (req, res) => {
         res.render('transactions',{ layout: 'transactionslayout' });
     }
+    exports.adminpage = (req, res) => {
+        res.render('admin',{ layout: 'adminlayout' });
+    }
 
     
