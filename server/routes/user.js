@@ -14,5 +14,6 @@ router.get('/loans', userController.loanspage);
 router.get('/profile', userController.profilepage);
 router.get('/subscriptions', userController.subscriptionspage);
 router.get('/support', userController.supportpage);
+router.get('/transactions', userController.transactionspage);
 
 module.exports = router;

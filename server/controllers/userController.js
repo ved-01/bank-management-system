@@ -79,5 +79,8 @@ exports.create = (req,res) => {
     exports.supportpage = (req, res) => {
         res.render('support',{ layout: 'supportlayout' });
     }
+    exports.transactionspage = (req, res) => {
+        res.render('transactions',{ layout: 'transactionslayout' });
+    }
 
     
