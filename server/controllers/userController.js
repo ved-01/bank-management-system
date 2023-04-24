@@ -67,3 +67,17 @@ exports.create = (req,res) => {
     exports.dashboardpage = (req, res) => {
         res.render('dashboard',{ layout: 'dashboardlayout' });
     }
+    exports.loanspage = (req, res) => {
+        res.render('loans',{ layout: 'loanslayout' });
+    }
+    exports.profilepage = (req, res) => {
+        res.render('profile',{ layout: 'profilelayout' });
+    }
+    exports.subscriptionspage = (req, res) => {
+        res.render('subscriptions',{ layout: 'subscriptionslayout' });
+    }
+    exports.supportpage = (req, res) => {
+        res.render('support',{ layout: 'supportlayout' });
+    }
+
+    

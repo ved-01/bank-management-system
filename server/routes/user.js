@@ -10,5 +10,9 @@ router.post('/adduser', userController.create);
 router.get('/login', userController.loginpage);
 router.get('/cards', userController.cardspage);
 router.get('/dashboard', userController.dashboardpage);
+router.get('/loans', userController.loanspage);
+router.get('/profile', userController.profilepage);
+router.get('/subscriptions', userController.subscriptionspage);
+router.get('/support', userController.supportpage);
 
 module.exports = router;
