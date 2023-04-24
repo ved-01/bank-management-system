@@ -29,7 +29,8 @@ exports.create = (req,res) => {
                 Connection.release();
     
                 if(!err){
-                    res.render('home');
+                    res.render('home', {
+                    });
                 } else{
                     console.log(err);
                 }
@@ -55,3 +56,7 @@ exports.create = (req,res) => {
           }
         });
       }
+
+    exports.loginpage = (req, res) => {
+        res.render('login',{ layout: 'loginlayout' });
+    }

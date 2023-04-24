@@ -7,6 +7,6 @@ router.get('/', userController.view);
 
 router.post('/adduser', userController.create);
 
-router.post('/login', userController.login)
+router.get('/login', userController.loginpage);
 
 module.exports = router;
