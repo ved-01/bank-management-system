@@ -46,13 +46,13 @@ exports.dashboardpage = (req, res) => {
             const username = req.query.username;
 
             // fetch user details from the database based on username
-            Connection.query('SELECT * FROM account, account_holder WHERE account.username = ?', [username], (error, results) => {
+            Connection.query('SELECT * FROM account, account_holder WHERE account.username = account_holder.username and account.username = ?', [username], (error, results) => {
                 if (error) throw error;
 
                 const user = results[0];
-                user.netWorth = function() {
-                    return this.Balance + 1005442 + 70000;
-                };
+                // user.netWorth = function() {
+                //     return this.Balance + 1005442 + 70000;
+                // };
 
                 // render the dashboard page with the user's details
                 res.render('dashboard', { layout: 'dashboardlayout', user });
