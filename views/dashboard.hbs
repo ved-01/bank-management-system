@@ -23,17 +23,18 @@
                         </a>
                     </li>
                     <li>
-                        <a href="cards"
-                            class="flex items-center px-8 py-3 bg-gradient-to-r hover:from-purple-200 hover:text-purple-600">
-                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-5 w-5 mr-5">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-                            </svg>
-                            Cards
-                        </a>
+                        <a href="/cards?username={{user.username}}"
+   class="flex items-center px-8 py-3 bg-gradient-to-r hover:from-purple-200 hover:text-purple-600">
+   <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-5 w-5 mr-5">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+         d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+   </svg>
+   Cards
+</a>
+
                     </li>
                     <li>
-                        <a href="subscriptions"
+                        <a href="subscriptions?username={{user.username}}"
                             class="flex items-center px-8 py-3 bg-gradient-to-r hover:from-purple-200 hover:text-purple-600">
                             <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-5 w-5 mr-5">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -53,7 +54,7 @@
                         </a>
                     </li> -->
                     <li>
-                        <a href="transaction"
+                        <a href="transaction?username={{user.username}}"
                             class="flex items-center px-8 py-3 bg-gradient-to-r hover:from-purple-200 hover:text-purple-600">
                             <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-5 w-5 mr-5">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -63,7 +64,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="loans"
+                        <a href="loans?username={{user.username}}"
                             class="flex items-center px-8 py-3 bg-gradient-to-r hover:from-purple-200 hover:text-purple-600">
                             <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-5 w-5 mr-5">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -73,7 +74,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="support"
+                        <a href="support?username={{user.username}}"
                             class="flex items-center px-8 py-3 bg-gradient-to-r hover:from-purple-200 hover:text-purple-600">
                             <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-5 w-5 mr-5">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -127,7 +128,7 @@
                     </div>
                 </div>
                 <div class="charts-wrapper">
-                    <section role="credit-card" onclick="myFunction()">
+                    <section role="credit-card" onclick="myFunction('{{user.username}}')">
                         <div class="top">
                             <img src="img/dashboard/mastercard.svg" />
                             <img src="img/dashboard/apple_pay.svg" class="apple_pay" />
@@ -147,27 +148,25 @@
                         </div>
                     </section>
                     <section role="chart" class="exchange-rates">
-                        <h3 class="title" id="chart1-title" style="font-size: 2em;">Networth</h3>
-                        <h3 class="title" id="chart1-title1">$12,08,592</h3>
-                        <div id="charts-title">
-                            <div>
-                                <h3 class="title" id="chart1-title" style="line-height: 2.5em; font-size: 1.1em;">
-                                    Balance</h3>
-                                <h3 class="title" id="chart1-title2">${{ user.Balance }}</h3>
-                            </div>
-                            <div style="margin-left: 2em;">
-                                <h3 class="title" id="chart1-title" style="line-height: 2.5em; font-size: 1.1em;">
-                                    Investmemts</h3>
-                                <h3 class="title" id="chart1-title3">$10,05,442</h3>
-                            </div>
-                            <div style="margin-left: 2em;">
-                                <h3 class="title" id="chart1-title" style="line-height: 2.5em; font-size: 1.1em;">Credit
-                                    Utilized</h3>
-                                <h3 class="title" id="chart1-title4">$70,000</h3>
-                            </div>
-                        </div>
-                        <canvas id="exchangeRates"></canvas>
-                    </section>
+  <h3 class="title" id="chart1-title" style="font-size: 2em;">Networth</h3>
+  <h3 class="title" id="chart1-title1">${{formatNumber user.netWorth}}</h3>
+  <div id="charts-title">
+    <div>
+      <h3 class="title" id="chart1-title" style="line-height: 2.5em; font-size: 1.1em;">Balance</h3>
+      <h3 class="title" id="chart1-title2">${{formatNumber user.Balance}}</h3>
+    </div>
+    <div style="margin-left: 2em;">
+      <h3 class="title" id="chart1-title" style="line-height: 2.5em; font-size: 1.1em;">Investments</h3>
+      <h3 class="title" id="chart1-title3">${{formatNumber user.investments}}</h3>
+    </div>
+    <div style="margin-left: 2em;">
+      <h3 class="title" id="chart1-title" style="line-height: 2.5em; font-size: 1.1em;">Credit Utilized</h3>
+      <h3 class="title" id="chart1-title4">${{formatNumber user.creditUtilized}}</h3>
+    </div>
+  </div>
+  <canvas id="exchangeRates"></canvas>
+</section>
+
                     <section role="chart" class="efficiency">
                         <h3 class="title">Credit Usage</h3>
                         <canvas id="efficiency"></canvas>
@@ -185,10 +184,10 @@
     <script src='https://ozcanzaferayan.github.io/financial-crm/vendor/chartjs/Chart.roundedBarCharts.js'></script>
     <script src="js/dash.js"></script>
     <script>
-        function myFunction() {
-            window.location.href = 'cards';
-        }
-    </script>
+    function myFunction(username) {
+        window.location.href = `cards?username=${username}`;
+    }
+</script>
     <script>
         function menuToggle() {
             const toggleMenu = document.querySelector(".menu");

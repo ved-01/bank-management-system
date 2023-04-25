@@ -50,9 +50,15 @@ exports.dashboardpage = (req, res) => {
                 if (error) throw error;
 
                 const user = results[0];
-                // user.netWorth = function() {
-                //     return this.Balance + 1005442 + 70000;
-                // };
+                
+                // calculate net worth by adding balance, credit utilized and investments
+                const balance = user.Balance;
+                const creditUtilized = Math.floor(Math.random() * (100000 - 10000 + 1) + 10000); // generate a random number between 10000 and 100000
+                const investments = Math.floor(Math.random() * (5000000 - 1000000 + 1) + 1000000); // generate a random number between 1000000 and 5000000
+                const netWorth = balance + investments + creditUtilized;
+                user.netWorth = netWorth;
+                user.investments = investments;
+                user.creditUtilized = creditUtilized;
 
                 // render the dashboard page with the user's details
                 res.render('dashboard', { layout: 'dashboardlayout', user });
@@ -66,6 +72,7 @@ exports.dashboardpage = (req, res) => {
         Connection.release(); // release connection back to pool
     });
 };
+
 
   
 
@@ -140,33 +147,6 @@ exports.create = (req,res) => {
         });
       };
       
-    
-    // exports.login = (req, res) => {
-    //     const { username, password } = req.body;
-      
-    //     pool.getConnection((err, connection) => {
-    //       if (err) throw err; //not connected
-    //       console.log('Connected as ID ' + connection.threadId);
-      
-    //       connection.query('SELECT * FROM account_holder WHERE LOWER(username) = LOWER(?)', [username], (err, rows) => {
-    //         connection.release();
-      
-    //         if (rows.length > 0 && rows[0].password === password) {
-    //           // user found, set session and redirect to dashboard
-    //           req.session.user = rows[0];
-    //           res.redirect('/dashboard', {layout: 'dashboardlayout'});
-    //         } else {
-    //           // user not found or password didn't match
-    //           res.send('Invalid username or password');
-    //         }
-      
-    //         if (err) {
-    //           console.log(err);
-    //         }
-      
-    //       });
-    //     });
-    //   };
       
     exports.register = (req,res) => {
         const { name, username, contact_no, password} = req.body;
@@ -192,21 +172,36 @@ exports.create = (req,res) => {
             });
         }
 
-        // exports.view = (req, res) => {
-        //     pool.getConnection((err, Connection) =>{
-        //         if(err) throw err; //not connected
-        //         console.log('Connected as ID' + Connection.threadId);
-        
-        //         Connection.query('SELECT * FROM account', (err, rows) =>{
-        //             Connection.release();
-        
-        //             if(!err){
-        //                 res.render('home', {rows});
-        //             } else{
-        //                 console.log(err);
-        //             }
-        
-        //             console.log('The data from user table: \n', rows);
-        //         });
-        //     });
-        // }
+        exports.cardspage = (req, res) => {
+            const username = req.query.username;
+          
+            pool.getConnection((err, Connection) => {
+              if (err) throw err; // not connected
+              console.log('Connected as ID ' + Connection.threadId);
+          
+              // fetch user details from the database based on username
+              Connection.query(
+                'SELECT * FROM account, account_holder WHERE account.username = account_holder.username and account.username = ?',
+                [username],
+                (error, results) => {
+                  if (error) throw error;
+          
+                  const user = results[0];
+          
+                  // calculate net worth by adding balance, credit utilized and investments
+                //   const balance = user.Balance;
+                //   const creditUtilized = Math.floor(Math.random() * (100000 - 10000 + 1) + 10000); // generate a random number between 10000 and 100000
+                //   const investments = Math.floor(Math.random() * (5000000 - 1000000 + 1) + 1000000); // generate a random number between 1000000 and 5000000
+                //   const netWorth = balance + investments + creditUtilized;
+                //   user.netWorth = netWorth;
+                //   user.investments = investments;
+                //   user.creditUtilized = creditUtilized;
+          
+                  // render the cards page with the user's details
+                  res.render('cards', { layout: 'cardslayout', user });
+                }
+              );
+          
+              Connection.release(); // release connection back to pool
+            });
+          };

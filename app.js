@@ -16,7 +16,19 @@ app.use(bodyParser.json());
 
 app.use(express.static('public'));
 
-app.engine('hbs', exphbs.engine({extname: '.hbs'}));
+app.engine('hbs', exphbs.engine({
+    extname: '.hbs',
+    helpers: {
+        formatNumber: function (value) {
+            if (value != null) {
+                return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            } else {
+                return '';
+            }
+        }
+    }    
+}));
+
 app.set('view engine', 'hbs');
 
 const pool=mysql.createPool({
