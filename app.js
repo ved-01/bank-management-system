@@ -2,6 +2,8 @@ const express = require('express');
 const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
+// const session = require('express-session');
+
 
 require('dotenv').config();
 
@@ -27,6 +29,11 @@ const pool=mysql.createPool({
 
 });
 
+// app.use(session({
+//     secret: 'your secret key',
+//     resave: false,
+//     saveUninitialized: true
+//   }));
 
 
 //Connect to DB

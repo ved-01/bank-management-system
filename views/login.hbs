@@ -7,16 +7,16 @@
 					<input type="text" name="txt" placeholder="User name" required="">
 					<input type="email" name="email" placeholder="Email" required="">
 					<input type="password" name="pswd" placeholder="Password" required="">
-					<button>Sign up</button>
+					<button type="submit">Sign up</button>
 				</form>
 			</div>
 
 			<div class="login">
-				<form method="POST" action="/loginuser" novalidate>
+				<form method="POST" action="/login" novalidate>
 					<label for="chk" aria-hidden="true">Login</label>
 					<input type="text" class="form-control" name="username" id="floatingInput" value="{{this.username}}" placeholder="Username" required="">
 					<input type="password" class="form-control" name="password" id="floatingInput" value="{{this.password}}" placeholder="Password" required="">
-					<button>Login</button>
+					<button type="submit">Login</button>
 				</form>
 			</div>
 	</div>
