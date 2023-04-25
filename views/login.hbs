@@ -12,10 +12,10 @@
 			</div>
 
 			<div class="login">
-				<form>
+				<form method="POST" action="/loginuser" novalidate>
 					<label for="chk" aria-hidden="true">Login</label>
-					<input type="email" name="email" placeholder="Email" required="">
-					<input type="password" name="pswd" placeholder="Password" required="">
+					<input type="text" class="form-control" name="username" id="floatingInput" value="{{this.username}}" placeholder="Username" required="">
+					<input type="password" class="form-control" name="password" id="floatingInput" value="{{this.password}}" placeholder="Password" required="">
 					<button>Login</button>
 				</form>
 			</div>

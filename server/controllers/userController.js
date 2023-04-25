@@ -1,4 +1,5 @@
 const mysql = require('mysql');
+const { use } = require('../routes/user');
 
 
 //Connection Pool
@@ -63,28 +64,65 @@ exports.create = (req,res) => {
                     console.log(err);
                 }
     
-                console.log('The data from user table: \n', rows);
+                // console.log('The data from user table: \n', rows);
             });
         });
     }
 
+    // exports.login = (req, res) => {
+    //     const { username, password } = req.body;
+      
+    //     pool.getConnection((err, connection) => {
+    //       if (err) throw err; //not connected
+    //       console.log('Connected as ID ' + connection.threadId);
+      
+    //       connection.query('SELECT * FROM account_holder WHERE username = ? AND password = ?', [username, password], (err, rows) => {
+    //         connection.release();
+
+    //         if(!err){
+    //             if (rows.length > 0) {
+    //                 // user found, set session and redirect to dashboard
+    //                 req.session.user = rows[0];
+    //                 res.redirect('dashboard', { layout: 'dashboardlayout' });
+    //                 // res.render('login', {layout: 'loginlayout'})
+    //               } else {
+    //                 // user not found or password didn't match
+    //                 res.send('Invalid username or password');
+    //               }
+    //         }
+    //         else{
+    //           console.log(err);
+    //         }
+      
+    //       });
+    //     });
+    //   };
+      
+    
     exports.login = (req, res) => {
-        const { email, password } = req.body;
-        const sql = 'SELECT * FROM users WHERE email = ? AND password = ?';
-        connection.query(sql, [email, password], (error, results) => {
-          if (error) throw error;
-          if (results.length > 0) {
-            const user = results[0];
-            // password matched
-            req.session.user = user;
-            res.redirect('login', { layout: 'login-layout' });
-          } else {
-            // user not found or password didn't match
-            res.send('Invalid email or password');
-          }
+        const { username, password } = req.body;
+      
+        pool.getConnection((err, connection) => {
+          if (err) throw err; //not connected
+          console.log('Connected as ID ' + connection.threadId);
+      
+          connection.query('SELECT * FROM account_holder WHERE LOWER(username) = LOWER(?)', [username], (err, rows) => {
+            connection.release();
+      
+            if (rows.length > 0 && rows[0].password === password) {
+              // user found, set session and redirect to dashboard
+              req.session.user = rows[0];
+              res.redirect('/dashboard', {layout: 'dashboardlayout'});
+            } else {
+              // user not found or password didn't match
+              res.send('Invalid username or password');
+            }
+      
+            if (err) {
+              console.log(err);
+            }
+      
+          });
         });
-      }
-
-    
-
-    
+      };
+      
