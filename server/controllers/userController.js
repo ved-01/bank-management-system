@@ -23,17 +23,51 @@ exports.loginpage = (req, res) => {
 exports.cardspage = (req, res) => {
     res.render('cards',{ layout: 'cardslayout' });
 }
+// exports.dashboardpage = (req, res) => {
+//     // res.render('dashboard',{ layout: 'dashboardlayout' });
+//     if (req.session.user) {
+//         const username = req.query.username;
+
+//         // render the dashboard page with the user's details
+//         // res.render('dashboard', { layout: 'dashboardlayout' });
+//         res.render('dashboard', { layout: 'dashboardlayout', user: req.session.user });
+//       } else {
+//         // redirect to login page if not logged in
+//         res.redirect('/');
+//      }
+// }
+
 exports.dashboardpage = (req, res) => {
-    // res.render('dashboard',{ layout: 'dashboardlayout' });
-    if (req.session.user) {
-        // render the dashboard page with the user's details
-        // res.render('dashboard', { layout: 'dashboardlayout' });
-        res.render('dashboard', { layout: 'dashboardlayout', user: req.session.user });
-      } else {
-        // redirect to login page if not logged in
-        res.redirect('/');
-     }
-}
+    pool.getConnection((err, Connection) => {
+        if (err) throw err; // not connected
+        console.log('Connected as ID ' + Connection.threadId);
+
+        if (req.session.user) {
+            const username = req.query.username;
+
+            // fetch user details from the database based on username
+            Connection.query('SELECT * FROM account, account_holder WHERE account.username = ?', [username], (error, results) => {
+                if (error) throw error;
+
+                const user = results[0];
+                user.netWorth = function() {
+                    return this.Balance + 1005442 + 70000;
+                };
+
+                // render the dashboard page with the user's details
+                res.render('dashboard', { layout: 'dashboardlayout', user });
+            });
+
+        } else {
+            // redirect to login page if not logged in
+            res.redirect('/');
+        }
+
+        Connection.release(); // release connection back to pool
+    });
+};
+
+  
 
 exports.loanspage = (req, res) => {
     res.render('loans',{ layout: 'loanslayout' });
@@ -92,7 +126,8 @@ exports.create = (req,res) => {
               if (rows.length > 0) {
                 // user found, set session and redirect to dashboard
                 req.session.user = rows[0];
-                res.redirect('/dashboard');
+                res.redirect('/dashboard?username=' + username);
+                // res.render('login', {layout: 'loginlayout'})
               } else {
                 // user not found or password didn't match
                 res.render('login', { layout: 'loginlayout', error: 'Invalid username or password', alert: 'Invalid username or password' });
@@ -156,3 +191,22 @@ exports.create = (req,res) => {
                 });
             });
         }
+
+        // exports.view = (req, res) => {
+        //     pool.getConnection((err, Connection) =>{
+        //         if(err) throw err; //not connected
+        //         console.log('Connected as ID' + Connection.threadId);
+        
+        //         Connection.query('SELECT * FROM account', (err, rows) =>{
+        //             Connection.release();
+        
+        //             if(!err){
+        //                 res.render('home', {rows});
+        //             } else{
+        //                 console.log(err);
+        //             }
+        
+        //             console.log('The data from user table: \n', rows);
+        //         });
+        //     });
+        // }
