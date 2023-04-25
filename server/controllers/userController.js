@@ -95,7 +95,7 @@ exports.create = (req,res) => {
                 res.redirect('/dashboard');
               } else {
                 // user not found or password didn't match
-                res.render('login', { layout: 'loginlayout', error: 'Invalid username or password' });
+                res.render('login', { layout: 'loginlayout', error: 'Invalid username or password', alert: 'Invalid username or password' });
               }
             } else {
               console.log(err);
@@ -133,3 +133,26 @@ exports.create = (req,res) => {
     //     });
     //   };
       
+    exports.register = (req,res) => {
+        const { name, username, contact_no, password} = req.body;
+        
+            pool.getConnection((err, Connection) =>{
+                if(err) throw err; //not connected
+                console.log('Connected as ID' + Connection.threadId);
+        
+                let searchTerm = req.body.search; //search is the actual input from user
+                
+                Connection.query('INSERT INTO account_holder SET name = ?, username = ?, contact_no = ?, password = ?',[ name, username, contact_no, password] ,(err, rows) =>{
+                    Connection.release();
+        
+                    if(!err){
+                        res.render('login', { layout: 'loginlayout'
+                        });
+                    } else{
+                        console.log(err);
+                    }
+        
+                    // console.log('The data from user table: \n', rows);
+                });
+            });
+        }

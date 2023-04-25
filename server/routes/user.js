@@ -19,6 +19,7 @@ router.get('/transactions', userController.transactionspage);
 router.get('/admin', userController.adminpage);
 
 router.post('/adduser', userController.create);
+router.post('/register', userController.register);
 router.post('/login', userController.login);
 
 module.exports = router;
