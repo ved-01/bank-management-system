@@ -110,7 +110,7 @@
                         <ul>
                             <li>
                                 <span id="Loan-h" style="font-size: 15px; font-weight: bold;">Loan ID:</span>
-                                <span id="Loan-ID" style="float: right;">BHR77365</span>
+                                <span id="Loan-ID" style="float: right;">{{ user.loan_id }}</span>
                             </li>
                             <li>
                                 <span id="Loan-h" style="font-size: 15px; font-weight: bold;">Loan Type:</span>
@@ -118,20 +118,20 @@
                             </li>
                             <li>
                                 <span id="Loan-h" style="font-size: 15px; font-weight: bold;">Loan Amount:</span>
-                                <span id="Loan-amount" style="float: right;">$1,20,000</span>
+                                <span id="Loan-amount" style="float: right;">{{ user.amount }}</span>
                             </li>
                             <li>
                                 <span id="Loan-h" style="font-size: 15px; font-weight: bold;">Loan Tenure:</span>
-                                <span id="Loan-tenure" style="float: right;">5 Years</span>
+                                <span id="Loan-tenure" style="float: right;">{{ user.duration }} years</span>
                             </li>
                             <li>
                                 <span id="Loan-h" style="font-size: 15px; font-weight: bold;">Loan Interest:</span>
-                                <span id="Loan-interest" style="float: right;">12%</span>
+                                <span id="Loan-interest" style="float: right;">{{ user.interest_rate }}%</span>
                             </li>
                         </ul>
                     </div>
                     <div class="cover">
-                        <p>Loan ID: BHR77365</p>
+                        <p>Loan ID: {{ user.loanID1 }}</p>
                     </div>
                 </div>
                 <div class="book">
@@ -140,7 +140,7 @@
                         <ul>
                             <li>
                                 <span id="Loan-h" style="font-size: 15px; font-weight: bold;">Loan ID:</span>
-                                <span id="Loan-ID" style="float: right;">BHR97547</span>
+                                <span id="Loan-ID" style="float: right;">{{ user.loan_id }}</span>
                             </li>
                             <li>
                                 <span id="Loan-h" style="font-size: 15px; font-weight: bold;">Loan Type:</span>
@@ -148,20 +148,20 @@
                             </li>
                             <li>
                                 <span id="Loan-h" style="font-size: 15px; font-weight: bold;">Loan Amount:</span>
-                                <span id="Loan-amount" style="float: right;">$80,000</span>
+                                <span id="Loan-amount" style="float: right;">{{ user.amount }}</span>
                             </li>
                             <li>
                                 <span id="Loan-h" style="font-size: 15px; font-weight: bold;">Loan Tenure:</span>
-                                <span id="Loan-tenure" style="float: right;">1 Years</span>
+                                <span id="Loan-tenure" style="float: right;">{{ user.duration }} years</span>
                             </li>
                             <li>
                                 <span id="Loan-h" style="font-size: 15px; font-weight: bold;">Loan Interest:</span>
-                                <span id="Loan-interest" style="float: right;">15%</span>
+                                <span id="Loan-interest" style="float: right;">{{ user.interest_rate }}%</span>
                             </li>
                         </ul>
                     </div>
                     <div class="cover">
-                        <p>Loan ID: BHR97547</p>
+                        <p>Loan ID: {{ user.loanID2 }}</p>
                     </div>
                 </div>
             </div>
