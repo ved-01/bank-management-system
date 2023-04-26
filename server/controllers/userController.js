@@ -491,7 +491,7 @@ exports.create = (req,res) => {
                   // user found, set session and redirect to dashboard
                   req.session.user = rows[0];
                   // const user = results[0];
-                  res.redirect('/admin?eid=' + empid);
+                  res.redirect('/admin?empid=' + empid);
                   // res.render('login', {layout: 'loginlayout'})
                 } else {
                   // user not found or password didn't match
@@ -576,38 +576,58 @@ exports.create = (req,res) => {
       
 
       exports.adminpage = (req, res) => {
-        pool.getConnection((err, Connection) => {
+        pool.getConnection((err, connection) => {
           if (err) throw err; // not connected
-          console.log('Connected as ID ' + Connection.threadId);
+          console.log('Connected as ID ' + connection.threadId);
       
           if (req.session.user) {
             const empid = req.query.empid;
       
-            Connection.query(
+            connection.query(
               'SELECT * FROM employee where E_ID = ?',
               [empid],
               (error, results1) => {
                 if (error) throw error;
       
                 const user = results1[0];
-                // fetch user details from the database based on username
-                Connection.query(
-                  'SELECT account_holder.name, account.Account_No, account.Balance, holder_address.city, holder_address.state, holderid.GovernmentID FROM account JOIN account_holder ON account.username = account_holder.username JOIN holder_address ON account_holder.pincode = holder_address.pincode JOIN holderid ON account.username = holderid.username;',
-                  (error, results) => {
+                user.empid = empid;
+      
+                // fetch the name of the employee from the employee table
+                connection.query(
+                  'SELECT E_Name FROM employee where E_ID = ?',
+                  [empid],
+                  (error, results2) => {
                     if (error) throw error;
-                    // console.log(results);
-                    res.render('admin', { layout: 'adminlayout', results }); // changed rows to results
+      
+                    user.E_Name = results2[0].E_Name; // add the name of the employee to the user object
+      
+                    // fetch user details from the database based on username
+                    connection.query(
+                      'SELECT account_holder.name, account.Account_No, account.Balance, holder_address.city, holder_address.state, holderid.GovernmentID FROM account JOIN account_holder ON account.username = account_holder.username JOIN holder_address ON account_holder.pincode = holder_address.pincode JOIN holderid ON account.username = holderid.username;',
+                      (error, results) => {
+                        if (error) throw error;
+      
+                        console.log('Results:', results);
+                        console.log(empid);
+                        res.render('admin', {
+                          layout: 'adminlayout',
+                          results: results,
+                          user: user,
+                          results1: results1,
+                        });
+                      }
+                    );
                   }
                 );
               }
             );
-      
           } else {
             // redirect to login page if not logged in
             res.redirect('/adminlogin');
           }
       
-          Connection.release(); // release connection back to pool
+          connection.release(); // release connection back to pool
         });
       };
+      
       
