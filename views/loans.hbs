@@ -168,7 +168,7 @@
              <div class="Noted">
                 <span id="Note">Note:</span>
                 <span>To apply for new loan, kindly visit to your nearest branch or</span>
-                <span id="Note-text" onclick="sendsupport()">contact support</span>
+                <span id="Note-text" onclick="sendsupport('{{user.username}}')">contact support</span>
                 <span>.</span>
             </div>
         </div>
@@ -187,7 +187,7 @@
             }
         </script>
         <script>
-            function sendsupport() {
-                window.location.href = '/support?username={{user.username}}';
+            function sendsupport(username) {
+                 window.location.href = `/support?username=${username}`;
             }
         </script>

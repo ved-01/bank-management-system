@@ -22,6 +22,8 @@ router.post('/adduser', userController.create);
 router.post('/register', userController.register);
 router.post('/login', userController.login);
 
+router.get('/adminlogin', userController.adminloginpage)
+
 // router.get('/adminuser', userController.viewallusers);
 
 module.exports = router;

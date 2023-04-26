@@ -20,6 +20,10 @@ exports.loginpage = (req, res) => {
     res.render('login',{ layout: 'loginlayout' });
 }
 
+exports.adminloginpage = (req, res) => {
+    res.render('adminlogin',{ layout: 'employeelayout' });
+}
+
 exports.cardspage = (req, res) => {
     res.render('cards',{ layout: 'cardslayout' });
 }
