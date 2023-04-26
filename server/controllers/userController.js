@@ -105,7 +105,7 @@ exports.transactionspage = (req, res) => {
 }
 
 exports.create = (req,res) => {
-    const { name, username, contact_no, password} = req.body;
+    const { name, username, contact_no, password, pincode} = req.body;
     
         pool.getConnection((err, Connection) =>{
             if(err) throw err; //not connected
@@ -113,7 +113,7 @@ exports.create = (req,res) => {
     
             let searchTerm = req.body.search; //search is the actual input from user
             
-            Connection.query('INSERT INTO account_holder SET name = ?, username = ?, contact_no = ?, password = ?',[ name, username, contact_no, password] ,(err, rows) =>{
+            Connection.query('INSERT INTO account_holder,account, holderid SET account_holder.name = ?, account_holder.username = ?, account_holder.contact_no = ?, account_holder.password = ?, account.username = ? , holderid = ?, account_holder.pincode = ? , holder_address.pincode = ? ',[ name, username, contact_no, password, username, username, pincode, pincode] ,(err, rows) =>{
                 Connection.release();
     
                 if(!err){
