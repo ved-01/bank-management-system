@@ -16,10 +16,12 @@ router.get('/profile', userController.profilepage);
 router.get('/subscriptions', userController.subscriptionspage);
 router.get('/support', userController.supportpage);
 router.get('/transaction', userController.transactionspage);
-router.get('/admin', userController.adminpage);
+router.get('/admin', userController.viewallusers);
 
 router.post('/adduser', userController.create);
 router.post('/register', userController.register);
 router.post('/login', userController.login);
+
+// router.get('/adminuser', userController.viewallusers);
 
 module.exports = router;

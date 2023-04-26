@@ -53,9 +53,9 @@ exports.dashboardpage = (req, res) => {
                 
                 // calculate net worth by adding balance, credit utilized and investments
                 const balance = user.Balance;
-                const creditUtilized = Math.floor(Math.random() * (100000 - 10000 + 1) + 10000); // generate a random number between 10000 and 100000
+                const creditUtilized = Math.floor(balance * (10) + 10000); // generate a random number between 10000 and 100000
                 const investments = Math.floor(Math.random() * (5000000 - 1000000 + 1) + 1000000); // generate a random number between 1000000 and 5000000
-                const netWorth = balance + investments + creditUtilized;
+                const netWorth = balance + investments;
                 user.netWorth = netWorth;
                 user.investments = investments;
                 user.creditUtilized = creditUtilized;
@@ -90,9 +90,6 @@ exports.supportpage = (req, res) => {
 }
 exports.transactionspage = (req, res) => {
     res.render('transactions',{ layout: 'transactionslayout' });
-}
-exports.adminpage = (req, res) => {
-    res.render('admin',{ layout: 'adminlayout' });
 }
 
 exports.create = (req,res) => {
@@ -344,6 +341,7 @@ exports.create = (req,res) => {
 
           exports.profilepage = (req, res) => {
             const username = req.query.username;
+            console.log("HH")
           
             pool.getConnection((err, Connection) => {
               if (err) throw err; // not connected
@@ -375,3 +373,24 @@ exports.create = (req,res) => {
               Connection.release(); // release connection back to pool
             });
           };
+
+
+
+        exports.viewallusers = (req, res) => {
+            // const username = req.query.username;
+            // console.log("h")
+        
+            pool.getConnection((err, Connection) => {
+              if (err) throw err; // not connected
+              console.log('Connected as ID- ' + Connection.threadId);
+              Connection.query('SELECT account_holder.name, account.Account_No, account.Balance, holder_address.city, holder_address.state, holderid.GovernmentID FROM account JOIN account_holder ON account.username = account_holder.username JOIN holder_address ON account_holder.pincode = holder_address.pincode JOIN holderid ON account.username = holderid.username;',
+                (error, results) => {
+                  if (error) throw error;
+                console.log(results);
+                  res.render('admin', { layout: 'adminlayout', results }); // changed rows to results
+                }
+              );
+              Connection.release(); // release connection back to pool
+            });
+          };
+          
