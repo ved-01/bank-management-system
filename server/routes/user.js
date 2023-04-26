@@ -22,6 +22,9 @@ router.get('/transaction', userController.transactionspage);
 router.get('/editprofile', userController.editpage);
 
 router.post('/adduser', userController.create);
+router.post('/editprofile', userController.update);
+
+// router.post('/profile', userController.profilepagenew);
 
 // *******************************************************************
 

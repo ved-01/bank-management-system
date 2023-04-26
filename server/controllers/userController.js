@@ -672,4 +672,82 @@ exports.create = (req,res) => {
         });
       };
       
+      // exports.update = (req, res) => {
+      //   const username = req.query.username;
+      //   const { pincode, state, city, governmentID, contact_no } = req.body;
       
+      //   console.log("HHH")
+      
+      //   pool.getConnection((err, Connection) => {
+      //     if (err) throw err; // not connected
+      //     console.log('Connected as ID ' + Connection.threadId);
+      
+      //     // fetch user details from the database based on username
+      //     Connection.query(
+      //       'UPDATE account, account_holder, holder_address, holderid SET account_holder.pincode = ?, holder_address.pincode = ?, holder_address.state = ?, holder_address.city = ?, holderid.governmentID = ?, account_holder.contact_no = ? WHERE account.username = ? AND account.username = account_holder.username AND account_holder.pincode = holder_address.pincode AND account.username = holderid.username',
+      //       [pincode, pincode, state, city, governmentID, contact_no, username], (error, results) => {
+      //         if (error) throw error;
+      
+      //         const user = results[0];
+      
+      //         res.render('/editprofile?username=' + username, { layout: 'profilelayout' });
+
+      //       }
+      //     );
+      
+      //     Connection.release(); // release connection back to pool
+      //   });
+      // };
+
+      // exports.update = (req, res) => {
+      //   const username = req.query.username;
+      //   const { pincode, state, city, governmentID, contact_no } = req.body;
+      
+      //   console.log("HHH")
+      
+      //   pool.getConnection((err, Connection) => {
+      //     if (err) throw err; // not connected
+      //     console.log('Connected as ID ' + Connection.threadId);
+      
+      //     // fetch user details from the database based on username
+      //     Connection.query(
+      //       'UPDATE account, account_holder, holder_address, holderid SET account_holder.pincode = ?, holder_address.pincode = ?, holder_address.state = ?, holder_address.city = ?, holderid.governmentID = ?, account_holder.contact_no = ? WHERE account.username = ? AND account.username = account_holder.username AND account_holder.pincode = holder_address.pincode AND account.username = holderid.username',
+      //       [pincode, pincode, state, city, governmentID, contact_no, username], (error, results) => {
+      //         if (error) throw error;
+
+      //         const user = results[0];
+      
+      //         res.redirect(`/editprofile?username=${user.username}`);
+      //       }
+      //     );
+      
+      //     Connection.release(); // release connection back to pool
+      //   });
+      // };
+      exports.update = (req, res) => {
+        const username = req.query.username;
+        const { name, pincode, state, city, GovernmentID, contact_no } = req.body;
+      
+        console.log("HHH")
+      
+        pool.getConnection((err, Connection) => {
+          if (err) throw err; // not connected
+          console.log('Connected as ID ' + Connection.threadId);
+      
+          // fetch user details from the database based on username
+          Connection.query(
+            'UPDATE account, account_holder, holder_address, holderid  SET account_holder.name = ? , account_holder.pincode = ?,  holder_address.pincode = ?,  holder_address.state = ?,  holder_address.city = ?,  holderid.GovernmentID = ?,   account_holder.contact_no = ?  WHERE account.username = ?  AND account.username = account_holder.username AND account_holder.pincode = holder_address.pincode   AND account.username = holderid.username;',
+            [name, pincode, pincode, state, city, GovernmentID, contact_no, username], (error, results) => {
+              if (error) throw error;
+      
+              res.redirect(`/editprofile?username=${username}`);
+            }
+          );
+      
+          Connection.release(); // release connection back to pool
+        });
+      };
+      
+      
+      
+
