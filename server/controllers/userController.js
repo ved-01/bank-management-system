@@ -506,28 +506,108 @@ exports.create = (req,res) => {
         };
 
 
-        exports.adminpage = (req, res) => {
-          pool.getConnection((err, Connection) => {
-              if (err) throw err; // not connected
-              console.log('Connected as ID ' + Connection.threadId);
+      //   exports.adminpage = (req, res) => {
+      //     pool.getConnection((err, Connection) => {
+      //         if (err) throw err; // not connected
+      //         console.log('Connected as ID ' + Connection.threadId);
       
-              if (req.session.user) {
-                  const empid = req.query.empid;
+      //         if (req.session.user) {
+      //             const empid = req.query.empid;
                   
+                  
+      //             // fetch user details from the database based on username
+      //             Connection.query('SELECT account_holder.name, account.Account_No, account.Balance, holder_address.city, holder_address.state, holderid.GovernmentID FROM account JOIN account_holder ON account.username = account_holder.username JOIN holder_address ON account_holder.pincode = holder_address.pincode JOIN holderid ON account.username = holderid.username;',
+      //           (error, results) => {
+      //             if (error) throw error;
+      //           console.log(results);
+      //             res.render('admin', { layout: 'adminlayout', results }); // changed rows to results
+      //           });
       
-                  // fetch user details from the database based on username
-                  Connection.query('SELECT account_holder.name, account.Account_No, account.Balance, holder_address.city, holder_address.state, holderid.GovernmentID FROM account JOIN account_holder ON account.username = account_holder.username JOIN holder_address ON account_holder.pincode = holder_address.pincode JOIN holderid ON account.username = holderid.username;',
-                (error, results) => {
-                  if (error) throw error;
-                console.log(results);
-                  res.render('admin', { layout: 'adminlayout', results }); // changed rows to results
-                });
+      //         } else {
+      //             // redirect to login page if not logged in
+      //             res.redirect('/adminlogin');
+      //         }
       
-              } else {
-                  // redirect to login page if not logged in
-                  res.redirect('/adminlogin');
+      //         Connection.release(); // release connection back to pool
+      //     });
+      // };
+
+      // exports.adminpage = (req, res) => {
+      //   pool.getConnection((err, connection) => {
+      //     if (err) throw err; // not connected
+      //     console.log('Connected as ID ' + connection.threadId);
+      
+      //     if (req.session.user) {
+      //       const empid = req.query.empid;
+      
+      //       // fetch user details from the database based on username
+      //       connection.query(
+      //         'SELECT account_holder.name, account.Account_No, account.Balance, holder_address.city, holder_address.state, holderid.GovernmentID FROM account JOIN account_holder ON account.username = account_holder.username JOIN holder_address ON account_holder.pincode = holder_address.pincode JOIN holderid ON account.username = holderid.username;',
+      //         (error, results) => {
+      //           if (error) throw error;
+      //           console.log(results);
+      
+      //           // fetch admin name from the database based on admin username
+      //           const adminID = req.session.user;
+      //           let adminName = '';
+      //           connection.query(
+      //             `SELECT * FROM employee WHERE E_ID ='${adminID}'`,
+      //             (err, admin) => {
+      //               if (err) throw err;
+      //               console.log(admin);
+      //               adminName = admin[0].E_Name; // set the value of adminName
+      //               res.render('admin', {
+      //                 layout: 'adminlayout',
+      //                 results,
+      //                 adminName, // pass admin name to the view
+      //               });
+      //             }
+      //           );
+      //         }
+      //       );
+      //     } else {
+      //       // redirect to login page if not logged in
+      //       res.redirect('/adminlogin');
+      //     }
+      
+      //     connection.release(); // release connection back to pool
+      //   });
+      // };
+      
+
+      exports.adminpage = (req, res) => {
+        pool.getConnection((err, Connection) => {
+          if (err) throw err; // not connected
+          console.log('Connected as ID ' + Connection.threadId);
+      
+          if (req.session.user) {
+            const empid = req.query.empid;
+      
+            Connection.query(
+              'SELECT * FROM employee where E_ID = ?',
+              [empid],
+              (error, results1) => {
+                if (error) throw error;
+      
+                const user = results1[0];
+                // fetch user details from the database based on username
+                Connection.query(
+                  'SELECT account_holder.name, account.Account_No, account.Balance, holder_address.city, holder_address.state, holderid.GovernmentID FROM account JOIN account_holder ON account.username = account_holder.username JOIN holder_address ON account_holder.pincode = holder_address.pincode JOIN holderid ON account.username = holderid.username;',
+                  (error, results) => {
+                    if (error) throw error;
+                    // console.log(results);
+                    res.render('admin', { layout: 'adminlayout', results }); // changed rows to results
+                  }
+                );
               }
+            );
       
-              Connection.release(); // release connection back to pool
-          });
+          } else {
+            // redirect to login page if not logged in
+            res.redirect('/adminlogin');
+          }
+      
+          Connection.release(); // release connection back to pool
+        });
       };
+      
