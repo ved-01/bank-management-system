@@ -394,3 +394,37 @@ exports.create = (req,res) => {
             });
           };
           
+
+        //   exports.transactionspage = (req, res) => {
+        //     const username = req.query.username;
+          
+        //     pool.getConnection((err, Connection) => {
+        //       if (err) throw err; // not connected
+        //       console.log('Connected as ID ' + Connection.threadId);
+          
+        //       // fetch user details from the database based on username
+        //       Connection.query(
+        //         'SELECT * FROM account, account_holder WHERE account.username = account_holder.username and account.username = ?',
+        //         [username],
+        //         (error, results) => {
+        //           if (error) throw error;
+          
+        //           const user = results[0];
+          
+        //           // calculate net worth by adding balance, credit utilized and investments
+        //         //   const balance = user.Balance;
+        //         //   const creditUtilized = Math.floor(Math.random() * (100000 - 10000 + 1) + 10000); // generate a random number between 10000 and 100000
+        //         //   const investments = Math.floor(Math.random() * (5000000 - 1000000 + 1) + 1000000); // generate a random number between 1000000 and 5000000
+        //         //   const netWorth = balance + investments + creditUtilized;
+        //         //   user.netWorth = netWorth;
+        //         //   user.investments = investments;
+        //         //   user.creditUtilized = creditUtilized;
+          
+        //           // render the cards page with the user's details
+        //           res.render('transactions', { layout: 'transactionslayout', user });
+        //         }
+        //       );
+          
+        //       Connection.release(); // release connection back to pool
+        //     });
+        //   };
