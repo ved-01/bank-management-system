@@ -58,13 +58,13 @@ exports.dashboardpage = (req, res) => {
             const username = req.query.username;
 
             // fetch user details from the database based on username
-            Connection.query('SELECT * FROM account, account_holder WHERE account.username = account_holder.username and account.username = ?', [username], (error, results) => {
+            Connection.query('SELECT * FROM account, account_holder WHERE account.username = account_holder.username and account_holder.username = ?', [username], (error, results) => {
                 if (error) throw error;
 
                 const user = results[0];
                 
                 // calculate net worth by adding balance, credit utilized and investments
-                const balance = user.Balance;
+                const balance = user.balance;
                 const creditUtilized = Math.floor(balance * (5) + 10000); // generate a random number between 10000 and 100000
                 const investments = Math.floor(Math.random() * (5000 - 1000 + 1) + 300000); // generate a random number between 1000000 and 5000000
                 const netWorth = balance + investments;
@@ -104,29 +104,195 @@ exports.transactionspage = (req, res) => {
     res.render('transactions',{ layout: 'transactionslayout' });
 }
 
-exports.create = (req,res) => {
-    const { name, username, contact_no, password, pincode} = req.body;
+// exports.create = (req,res) => {
+//     const { name, username, contact_no, password, pincode} = req.body;
     
-        pool.getConnection((err, Connection) =>{
-            if(err) throw err; //not connected
-            console.log('Connected as ID' + Connection.threadId);
+//         pool.getConnection((err, Connection) =>{
+//             if(err) throw err; //not connected
+//             console.log('Connected as ID' + Connection.threadId);
     
-            let searchTerm = req.body.search; //search is the actual input from user
+//             let searchTerm = req.body.search; //search is the actual input from user
             
-            Connection.query('INSERT INTO account_holder,account, holderid SET account_holder.name = ?, account_holder.username = ?, account_holder.contact_no = ?, account_holder.password = ?, account.username = ? , holderid = ?, account_holder.pincode = ? , holder_address.pincode = ? ',[ name, username, contact_no, password, username, username, pincode, pincode] ,(err, rows) =>{
-                Connection.release();
+//             Connection.query('INSERT INTO account_holder SET name = ?, username = ?, contact_no = ?, password = ?, pincode = ?  ',[ name, username, contact_no, password, username, username, pincode, pincode] ,(err, rows) =>{
+//                 Connection.release();
+                
     
-                if(!err){
-                    res.render('home', {
-                    });
-                } else{
-                    console.log(err);
-                }
+//                 if(!err){
+//                     res.render('home', {
+//                     });
+//                 } else{
+//                     console.log(err);
+//                 }
     
-                // console.log('The data from user table: \n', rows);
-            });
-        });
+//                 // console.log('The data from user table: \n', rows);
+//             });
+//         });
+//     }
+
+// exports.create = (req, res) => {
+//   const { name, username, contact_no, password, pincode } = req.body;
+
+//   pool.getConnection((err, Connection) => {
+//     if (err) throw err; // not connected
+//     console.log('Connected as ID ' + Connection.threadId);
+
+//     Connection.beginTransaction((err) => {
+//       if (err) throw err;
+
+//       // Insert into account_holder table
+//       Connection.query('INSERT INTO account_holder SET name = ?, username = ?, contact_no = ?, password = ?, pincode = ?', [name, username, contact_no, password, pincode], (error, results, fields) => {
+//         if (error) {
+//           return Connection.rollback(() => {
+//             throw error;
+//           });
+//         }
+
+//         // Get the ID of the newly inserted account_holder record
+//         const holderId = results.insertId;
+
+//         // Insert into account table
+//         Connection.query('INSERT INTO account SET username = ?', [username], (error, results, fields) => {
+//           if (error) {
+//             return Connection.rollback(() => {
+//               throw error;
+//             });
+//           }
+
+//           // Get the ID of the newly inserted account record
+//           const accountId = results.insertId;
+
+//           // Insert into holder_address table
+//           Connection.query('INSERT INTO holder_address SET pincode = ?', [pincode], (error, results, fields) => {
+//             if (error) {
+//               return Connection.rollback(() => {
+//                 throw error;
+//               });
+//             }
+
+//             // Get the ID of the newly inserted holder_address record
+//             const holderAddressId = results.insertId;
+
+//             // Insert into holder_contact table
+//             Connection.query('INSERT INTO holderid SET username = ?', [username], (error, results, fields) => {
+//               if (error) {
+//                 return Connection.rollback(() => {
+//                   throw error;
+//                 });
+//               }
+
+//               // Commit the transaction
+//               Connection.commit((err) => {
+//                 if (err) {
+//                   return Connection.rollback(() => {
+//                     throw err;
+//                   });
+//                 }
+
+//                 console.log('Data inserted into all tables successfully!');
+//                 res.render('home');
+//               });
+//             });
+//           });
+//         });
+//       });
+//     });
+//   });
+// };
+
+exports.register = (req, res) => {
+  const { name, username, contact_no, password, pincode } = req.body;
+
+  pool.getConnection((err, Connection) => {
+    if (err) {
+      throw err; // not connected
     }
+
+    console.log('Connected as ID ' + Connection.threadId);
+
+    Connection.beginTransaction((err) => {
+      if (err) {
+        throw err;
+      }
+
+      // Insert into account_holder table
+      Connection.query(
+        'INSERT INTO account_holder (name, username, contact_no, password, pincode) VALUES (?, ?, ?, ?, ?)',
+        [name, username, contact_no, password, pincode],
+        (error, results, fields) => {
+          if (error) {
+            return Connection.rollback(() => {
+              throw error;
+            });
+          }
+
+          // Get the ID of the newly inserted account_holder record
+          const holderId = results.insertId;
+
+          // Insert into account table
+          Connection.query(
+            'INSERT INTO account (username) VALUES (?)',
+            [username],
+            (error, results, fields) => {
+              if (error) {
+                return Connection.rollback(() => {
+                  throw error;
+                });
+              }
+
+              // Get the ID of the newly inserted account record
+              const accountId = results.insertId;
+
+              // Insert into holder_address table
+              Connection.query(
+                'INSERT INTO holder_address (pincode) VALUES (?)',
+                [pincode],
+                (error, results, fields) => {
+                  if (error) {
+                    return Connection.rollback(() => {
+                      throw error;
+                    });
+                  }
+
+                  // Get the ID of the newly inserted holder_address record
+                  const holderAddressId = results.insertId;
+
+                  // Insert into holder_contact table
+                  Connection.query(
+                    'INSERT INTO holderid (username) VALUES (?)',
+                    [username],
+                    (error, results, fields) => {
+                      if (error) {
+                        return Connection.rollback(() => {
+                          throw error;
+                        });
+                      }
+
+                      // Commit the transaction
+                      Connection.commit((err) => {
+                        if (err) {
+                          return Connection.rollback(() => {
+                            throw err;
+                          });
+                        }
+
+                        console.log('Data inserted into all tables successfully!');
+                        res.render('home');
+                      });
+                    }
+                  );
+                }
+              );
+            }
+          );
+        }
+      );
+    });
+  });
+};
+
+
+
+
 
     exports.login = (req, res) => {
         const { username, password } = req.body;
@@ -159,7 +325,7 @@ exports.create = (req,res) => {
    
       
       
-    exports.register = (req,res) => {
+    exports.create = (req,res) => {
         const { name, username, contact_no, password} = req.body;
         
             pool.getConnection((err, Connection) =>{
@@ -192,7 +358,7 @@ exports.create = (req,res) => {
           
               // fetch user details from the database based on username
               Connection.query(
-                'SELECT * FROM account, account_holder WHERE account.username = account_holder.username and account.username = ?',
+                'SELECT * FROM account, account_holder WHERE account.username = account_holder.username and account_holder.username = ?',
                 [username],
                 (error, results) => {
                   if (error) throw error;
@@ -260,7 +426,7 @@ exports.create = (req,res) => {
           
               // fetch user details from the database based on username
               Connection.query(
-                'SELECT * FROM account, account_holder WHERE account.username = account_holder.username and account.username = ?',
+                'SELECT * FROM account, account_holder WHERE account.username = account_holder.username and account_holder.username = ?',
                 [username],
                 (error, results) => {
                   if (error) throw error;
@@ -294,7 +460,7 @@ exports.create = (req,res) => {
           
               // fetch user details from the database based on username
               Connection.query(
-                'SELECT * FROM account, account_holder WHERE account.username = account_holder.username and account.username = ?',
+                'SELECT * FROM account, account_holder WHERE account.username = account_holder.username and account_holder.username = ?',
                 [username],
                 (error, results) => {
                   if (error) throw error;
@@ -328,7 +494,7 @@ exports.create = (req,res) => {
           
               // fetch user details from the database based on username
               Connection.query(
-                'SELECT * FROM account, account_holder WHERE account.username = account_holder.username and account.username = ?',
+                'SELECT * FROM account, account_holder WHERE account.username = account_holder.username and account_holder.username = ?',
                 [username],
                 (error, results) => {
                   if (error) throw error;
@@ -362,7 +528,7 @@ exports.create = (req,res) => {
           
               // fetch user details from the database based on username
               Connection.query(
-                'SELECT * FROM account JOIN account_holder ON account.username = account_holder.username JOIN holder_address ON account_holder.pincode = holder_address.pincode JOIN holderid ON account.username = holderid.username WHERE account.username = ?',
+                'SELECT * FROM account JOIN account_holder ON account.username = account_holder.username JOIN holder_address ON account_holder.pincode = holder_address.pincode JOIN holderid ON account.username = holderid.username WHERE account_holder.username = ?',
                 [username],
                 (error, results) => {
                   if (error) throw error;
@@ -397,7 +563,7 @@ exports.create = (req,res) => {
           
               // fetch user details from the database based on username
               Connection.query(
-                'SELECT * FROM account JOIN account_holder ON account.username = account_holder.username JOIN holder_address ON account_holder.pincode = holder_address.pincode JOIN holderid ON account.username = holderid.username WHERE account.username = ?',
+                'SELECT * FROM account JOIN account_holder ON account.username = account_holder.username JOIN holder_address ON account_holder.pincode = holder_address.pincode JOIN holderid ON account.username = holderid.username WHERE account_holder.username = ?',
                 [username],
                 (error, results) => {
                   if (error) throw error;
@@ -736,7 +902,7 @@ exports.create = (req,res) => {
       
           // fetch user details from the database based on username
           Connection.query(
-            'UPDATE account, account_holder, holder_address, holderid  SET account_holder.name = ? , account_holder.pincode = ?,  holder_address.pincode = ?,  holder_address.state = ?,  holder_address.city = ?,  holderid.GovernmentID = ?,   account_holder.contact_no = ?  WHERE account.username = ?  AND account.username = account_holder.username AND account_holder.pincode = holder_address.pincode   AND account.username = holderid.username;',
+            'UPDATE account, account_holder, holder_address, holderid  SET account_holder.name = ? , account_holder.pincode = ?,  holder_address.pincode = ?,  holder_address.state = ?,  holder_address.city = ?,  holderid.GovernmentID = ?,   account_holder.contact_no = ?  WHERE account_holder.username = ?  AND account.username = account_holder.username AND account_holder.pincode = holder_address.pincode   AND account.username = holderid.username;',
             [name, pincode, pincode, state, city, GovernmentID, contact_no, username], (error, results) => {
               if (error) throw error;
       
