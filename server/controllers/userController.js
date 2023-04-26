@@ -20,6 +20,10 @@ exports.loginpage = (req, res) => {
     res.render('login',{ layout: 'loginlayout' });
 }
 
+// exports.supportpage = (req, res) => {
+//   res.render('support',{ layout: 'supportlayout' });
+// }
+
 exports.adminloginpage = (req, res) => {
   res.render('adminlogin',{ layout: 'employeelayout' });
 }
@@ -57,8 +61,8 @@ exports.dashboardpage = (req, res) => {
                 
                 // calculate net worth by adding balance, credit utilized and investments
                 const balance = user.Balance;
-                const creditUtilized = Math.floor(balance * (10) + 10000); // generate a random number between 10000 and 100000
-                const investments = Math.floor(Math.random() * (5000000 - 1000000 + 1) + 1000000); // generate a random number between 1000000 and 5000000
+                const creditUtilized = Math.floor(balance * (5) + 10000); // generate a random number between 10000 and 100000
+                const investments = Math.floor(Math.random() * (5000 - 1000 + 1) + 300000); // generate a random number between 1000000 and 5000000
                 const netWorth = balance + investments;
                 user.netWorth = netWorth;
                 user.investments = investments;
