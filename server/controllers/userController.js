@@ -20,6 +20,10 @@ exports.loginpage = (req, res) => {
     res.render('login',{ layout: 'loginlayout' });
 }
 
+exports.editpage = (req, res) => {
+  res.render('editprofile',{ layout: 'editprofilelayout' });
+}
+
 // exports.supportpage = (req, res) => {
 //   res.render('support',{ layout: 'supportlayout' });
 // }
@@ -349,6 +353,40 @@ exports.create = (req,res) => {
             });
           };
 
+          exports.editpage = (req, res) => {
+            const username = req.query.username;
+          
+            pool.getConnection((err, Connection) => {
+              if (err) throw err; // not connected
+              console.log('Connected as ID ' + Connection.threadId);
+          
+              // fetch user details from the database based on username
+              Connection.query(
+                'SELECT * FROM account JOIN account_holder ON account.username = account_holder.username JOIN holder_address ON account_holder.pincode = holder_address.pincode JOIN holderid ON account.username = holderid.username WHERE account.username = ?',
+                [username],
+                (error, results) => {
+                  if (error) throw error;
+          
+                  const user = results[0];
+          
+                  // calculate net worth by adding balance, credit utilized and investments
+                //   const balance = user.Balance;
+                //   const creditUtilized = Math.floor(Math.random() * (100000 - 10000 + 1) + 10000); // generate a random number between 10000 and 100000
+                //   const investments = Math.floor(Math.random() * (5000000 - 1000000 + 1) + 1000000); // generate a random number between 1000000 and 5000000
+                //   const netWorth = balance + investments + creditUtilized;
+                //   user.netWorth = netWorth;
+                //   user.investments = investments;
+                //   user.creditUtilized = creditUtilized;
+          
+                  // render the cards page with the user's details
+                  res.render('editprofile', { layout: 'editprofilelayout', user });
+                }
+              );
+          
+              Connection.release(); // release connection back to pool
+            });
+          };
+
           exports.profilepage = (req, res) => {
             const username = req.query.username;
             console.log("HH")
@@ -359,7 +397,7 @@ exports.create = (req,res) => {
           
               // fetch user details from the database based on username
               Connection.query(
-                'SELECT * FROM account, account_holder WHERE account.username = account_holder.username and account.username = ?',
+                'SELECT * FROM account JOIN account_holder ON account.username = account_holder.username JOIN holder_address ON account_holder.pincode = holder_address.pincode JOIN holderid ON account.username = holderid.username WHERE account.username = ?',
                 [username],
                 (error, results) => {
                   if (error) throw error;

@@ -19,6 +19,7 @@ router.get('/subscriptions', userController.subscriptionspage);
 router.get('/support', userController.supportpage);
 router.get('/transaction', userController.transactionspage);
 // router.post('/admin', userController.viewallusers);
+router.get('/editprofile', userController.editpage);
 
 router.post('/adduser', userController.create);
 
