@@ -20,6 +20,11 @@
 					<input type="password" class="form-control" name="password" id="floatingInput" value="{{this.password}}" placeholder="Password" required="">
 					<button type="submit">Login</button>
 				</form>
+				 {{#if alert}}
+<div class="alert alert-success alert-dismissible fade show" role="alert" style="text-align: center; color:red">
+  {{alert}}
+</div>
+{{/if}}
 			</div>
 
 
@@ -29,9 +34,5 @@
   <div>
     <img src="img/new_logo.png" alt="Logo" width="300" height="300" id="logo-login">
     <h3 id="text-logo">The Bank you deserve</h3>
-                        {{#if alert}}
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-  {{alert}}
-</div>
-{{/if}}
+                       
   </div>

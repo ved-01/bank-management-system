@@ -1,3 +1,11 @@
+$('.pop-up').hide(0);
+$('.pop-up-container').hide(0);
+
+$('.btn').click(function(){
+  modal.classList.add('hidden');
+  $('.pop-up').show();
+});
+
 'use strict';
 
 ///////////////////////////////////////
@@ -5,7 +13,7 @@
 const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.overlay');
 const btnCloseModal = document.querySelector('.btn--close-modal');
-// const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
+const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
 const section1 = document.querySelector('#section--1');
 const btnScrollTo = document.querySelector('.btn--scroll-to');
 const nav = document.querySelector('.nav');
@@ -73,25 +81,25 @@ document.addEventListener('keydown', function (e) {
 // 1. add eventlistner to common parent element
 //2. determine what element originate the event
 //3. mathching strategy
-// document.querySelector('.nav__links').addEventListener('click', function (e) {
-//   // now we have to figure out where this event actually happen , that is stored in e.target
-//   // child e click korle parent e gelo thn search kore kothai event ta hoice
-//   e.preventDefault(); // default event trigger off
-//   console.log(e.target); // targeted event store position
+document.querySelector('.nav__links').addEventListener('click', function (e) {
+  // now we have to figure out where this event actually happen , that is stored in e.target
+  // child e click korle parent e gelo thn search kore kothai event ta hoice
+  e.preventDefault(); // default event trigger off
+  console.log(e.target); // targeted event store position
 
-//   //matching strategy , mane common parent er event er response bad dibo
-//   if (e.target.classList.contains('nav__link')) {
-//     const id = e.target.getAttribute('href');
-//     if (!id) {
-//       location.href = 'login.html'
-//     }
-//     document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
-//     console.log(id);
-//   }
-//   //sum: feature e click korle parent node ul e jabe tokhn check dibe event target konta sei event target e giye event function perform korbe , common parent er deafult behaviour off kore kaj korte hobe onlu child element gula select kore
-//   //same event handler multiple place e bosanor theke event delegation lot better
-//   // some element that not exist on run time but at the end it will visible it can be done by event delegation
-// });
+  //matching strategy , mane common parent er event er response bad dibo
+  if (e.target.classList.contains('nav__link')) {
+    const id = e.target.getAttribute('href');
+    if (!id) {
+      location.href = '/login'
+    }
+    document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
+    console.log(id);
+  }
+  //sum: feature e click korle parent node ul e jabe tokhn check dibe event target konta sei event target e giye event function perform korbe , common parent er deafult behaviour off kore kaj korte hobe onlu child element gula select kore
+  //same event handler multiple place e bosanor theke event delegation lot better
+  // some element that not exist on run time but at the end it will visible it can be done by event delegation
+});
 
 //smooth scrooling in JS //button scrooling
 
@@ -384,6 +392,8 @@ function scrollToTop() {
     behavior: 'smooth',
   })
 }
+
+
 scrollToTopBtn.addEventListener('click', scrollToTop)
 
 const observer = new IntersectionObserver(scrollToTopCallback)

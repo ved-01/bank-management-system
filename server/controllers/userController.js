@@ -104,6 +104,30 @@ exports.transactionspage = (req, res) => {
     res.render('transactions',{ layout: 'transactionslayout' });
 }
 
+exports.adminedituser = (req, res) => {
+  // res.render('editalluser',{ layout: 'editadminuserlayout' });
+  const { name, pincode, state, city, governmentID, contact_no, balance , account_no , password} = req.body;
+    
+        pool.getConnection((err, Connection) =>{
+            if(err) throw err; //not connected
+            console.log('Connected as ID' + Connection.threadId);
+    
+            // let searchTerm = req.body.search; //search is the actual input from user
+            
+            Connection.query('SELECT * FROM account, account_holder, holder_address, holderid  WHERE account_holder.username = ?  AND account.username = account_holder.username AND account_holder.pincode = holder_address.pincode   AND account.username = holderid.username;', [ req.params.username],(err, rows) =>{
+                Connection.release();
+                const user = rows[0];
+                if(!err){
+                    res.redirect('/editalluser', {rows, user, layout: 'editadminuserlayout'});
+                } else{
+                    console.log(err);
+                }
+
+                console.log('The data from user table: \n', rows);
+            });
+        });
+}
+
 // exports.create = (req,res) => {
 //     const { name, username, contact_no, password, pincode} = req.body;
     
@@ -312,7 +336,7 @@ exports.register = (req, res) => {
                 // res.render('login', {layout: 'loginlayout'})
               } else {
                 // user not found or password didn't match
-                res.render('login', { layout: 'loginlayout', error: 'Invalid username or password', alert: 'Invalid username or password' });
+                res.render('login', { layout: 'loginlayout', error: 'Invalid username or password', alert: 'Invalid username or password!' });
               }
             } else {
               console.log(err);
@@ -887,7 +911,7 @@ exports.register = (req, res) => {
       //       }
       //     );
       
-      //     Connection.release(); // release connection back to pool
+      //     Connection.release(); 
       //   });
       // };
       exports.update = (req, res) => {
@@ -900,7 +924,6 @@ exports.register = (req, res) => {
           if (err) throw err; // not connected
           console.log('Connected as ID ' + Connection.threadId);
       
-          // fetch user details from the database based on username
           Connection.query(
             'UPDATE account, account_holder, holder_address, holderid  SET account_holder.name = ? , account_holder.pincode = ?,  holder_address.pincode = ?,  holder_address.state = ?,  holder_address.city = ?,  holderid.GovernmentID = ?,   account_holder.contact_no = ?  WHERE account_holder.username = ?  AND account.username = account_holder.username AND account_holder.pincode = holder_address.pincode   AND account.username = holderid.username;',
             [name, pincode, pincode, state, city, GovernmentID, contact_no, username], (error, results) => {
@@ -910,9 +933,120 @@ exports.register = (req, res) => {
             }
           );
       
-          Connection.release(); // release connection back to pool
+          Connection.release(); 
         });
       };
+
+//       exports.adminedit = (req, res) => {
+//         const username = req.query.username;
+//         exports.update = (req,res) => {
+//     const { first_name, last_name, email, Phone, comments} = req.body;
+
+//     pool.getConnection((err, Connection) =>{
+//         if(err) throw err; //not connected
+//         console.log('Connected as ID' + Connection.threadId);
+
+//         // let searchTerm = req.body.search; //search is the actual input from user
+        
+//         Connection.query('UPDATE user SET first_name = ?, last_name = ?, Phone = ?, email = ?, comments = ? WHERE id = ?', [first_name, last_name, Phone, email, comments , req.params.id],(err, rows) =>{
+//             Connection.release();
+
+//             if(!err){
+//                 pool.getConnection((err, Connection) =>{
+//                     if(err) throw err; //not connected
+//                     console.log('Connected as ID' + Connection.threadId);
+            
+//                     // let searchTerm = req.body.search; //search is the actual input from user
+                    
+//                     Connection.query('SELECT * FROM user WHERE id = ? ',[req.params.id],(err, rows) =>{
+//                         Connection.release();
+            
+//                         if(!err){
+//                             res.render('edit-user', {rows,alert: `${first_name} has been updated`});
+//                         } else{
+//                             console.log(err);
+//                         }
+            
+//                         console.log('The data from user table: \n', rows);
+//                     });
+//                 });
+
+
+
+
+//             } else{
+//                 console.log(err);
+//             }
+
+//             console.log('The data from user table: \n', rows);
+//         });
+//     });
+// }
+      
+        // console.log("HHH")
+      
+//         pool.getConnection((err, Connection) => {
+//           if (err) throw err; // not connected
+//           console.log('Connected as ID ' + Connection.threadId);
+      
+//           Connection.query(
+//             'UPDATE account, account_holder, holder_address, holderid  SET account_holder.name = ? , account_holder.pincode = ?,  holder_address.pincode = ?,  holder_address.state = ?,  holder_address.city = ?,  holderid.GovernmentID = ?,   account_holder.contact_no = ?  WHERE account_holder.username = ?  AND account.username = account_holder.username AND account_holder.pincode = holder_address.pincode   AND account.username = holderid.username;',
+//             [name, pincode, pincode, state, city, GovernmentID, contact_no, username], (error, results) => {
+//               if (error) throw error;
+      
+//               res.redirect(`/editprofile?username=${username}`);
+//             }
+//           );
+      
+          // Connection.release(); 
+//         });
+//       };
+
+      exports.adminedit = (req,res) => {
+        const { name, pincode, state, city, governmentID, contact_no, balance ,account_no , password} = req.body;
+    
+        pool.getConnection((err, Connection) =>{
+            if(err) throw err; //not connected
+            console.log('Connected as ID' + Connection.threadId);
+    
+            // let searchTerm = req.body.search; //search is the actual input from user
+            
+            Connection.query('UPDATE account, account_holder, holder_address, holderid  SET account_holder.name = ? , account_holder.pincode = ?,  holder_address.pincode = ?,  holder_address.state = ?,  holder_address.city = ?,  holderid.GovernmentID = ?,   account_holder.contact_no = ?, account.balance = ? , account.account_no = ?, account_holder.password = ?  WHERE account_holder.username = ?  AND account.username = account_holder.username AND account_holder.pincode = holder_address.pincode   AND account.username = holderid.username;', [name, pincode,pincode, state, city, governmentID, contact_no, balance ,account_no , password , req.params.username],(err, rows) =>{
+                Connection.release();
+    
+                if(!err){
+                    pool.getConnection((err, Connection) =>{
+                        if(err) throw err; //not connected
+                        console.log('Connected as ID' + Connection.threadId);
+                
+                        // let searchTerm = req.body.search; //search is the actual input from user
+                        
+                        Connection.query('SELECT * FROM account, account_holder, holderid, holder_address WHERE username = ? ',[req.params.username],(err, rows) =>{
+                            Connection.release();
+                            const user = rows[0];
+                
+                            if(!err){
+                                res.render('editalluser', {rows, user, layout:'editadminuserlayout'});
+                            } else{
+                                console.log(err);
+                            }
+                
+                            console.log('The data from user table: \n', rows);
+                        });
+                    });
+    
+    
+                } else{
+                    console.log(err);
+                }
+    
+                console.log('The data from user table: \n', rows);
+            });
+        });
+    }
+      
+
+
       
       
       

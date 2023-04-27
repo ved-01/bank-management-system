@@ -31,6 +31,9 @@ router.post('/editprofile', userController.update);
 router.get('/adminlogin', userController.adminloginpage);
 router.post('/adminlogin', userController.adminlogin);
 router.get('/admin', userController.adminpage);
+router.post('/adminedituser/:username', userController.adminedit);
+router.get('/editalluser/:username', userController.adminedituser);
+// router.get('/edituser/:id', userController.edit);
 
 
 module.exports = router;
