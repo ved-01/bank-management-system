@@ -10,9 +10,9 @@
                 <li class="nav__item">
                     <a class="nav__link" href="#section--2">About Us</a>
                 </li>
-                <li class="nav__item">
+                {{!-- <li class="nav__item">
                     <a class="nav__link" href="/login">Login</a>
-                </li>
+                </li> --}}
                 <li class="nav__item">
                     <a class="nav__link" href="#section--3">Reviews</a>
                 </li>
@@ -36,7 +36,21 @@
                
                 <p class="subtitle"> The Future of Online Banking</p>
                 <button class="btn--text btn--scroll-to">Learn more &DownArrow;</button>
+                <br> <br> <br>
+                {{!-- <div class="aurora"> --}}
+              <button class="loginbutton" onclick="myFunction()">Login</button>
+
+<script>
+function myFunction() {
+  window.location.href = "/login";
+}
+</script>
+
+                
+                {{!-- </div> --}}
+              
               </div>
+              
               <div>
                 <img src="../img/new_women_edited.jpg" alt="Women" height="380" width="520" class="women" id="women_img">
                </div>

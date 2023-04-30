@@ -1125,3 +1125,24 @@ h4 {
   text-align:center;
   margin-bottom:10px;
 }
+
+.loginbutton {
+  line-height: 2rem;
+  background-color: transparent;
+  border: 1px solid white;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  width: 150px;
+  transition: background-color 1s ease;
+}
+
+.loginbutton:hover {
+  background-color: white;
+  background-position: right center;
+  background-size: 200% 100%;
+  color: black;
+}
