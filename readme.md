@@ -1,4 +1,4 @@
-# Bank Management System - Bank Hamara 
+# Bank Management System -Bank Hamara 
 
 ## Overview
 This is a web application project developed for the *Database Management course (CS262)* by our group during the 4th semester of B.Tech. The application is designed to manage the operations of a bank, providing account creation, user dashboard for customers, and admin ui. The application is built using HTML, CSS, and JavaScript for the front-end and MySQL for the back-end. 
